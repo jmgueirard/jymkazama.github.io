@@ -4,7 +4,7 @@ class KonamiCode {
         this.sequence = [
             'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
             'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-            'KeyB', 'KeyA'
+            'b', 'a'
         ];
         this.userSequence = [];
         this.isActive = false;
@@ -14,7 +14,7 @@ class KonamiCode {
     
     init() {
         document.addEventListener('keydown', (e) => {
-            this.handleKeyPress(e.code);
+            this.handleKeyPress(e.key);
         });
     }
     
@@ -36,7 +36,7 @@ class KonamiCode {
     }
     
     checkSequence() {
-        return this.userSequence.every((key, index) => key === this.sequence[index]);
+        return this.userSequence.every((key, index) => key.toLowerCase() === this.sequence[index].toLowerCase());
     }
     
     activateEasterEgg() {
