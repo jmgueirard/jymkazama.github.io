@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jym Kazama - Senior Software Engineer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjMDAwIi8+CjxyZWN0IHg9IjIiIHk9IjIiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgZmlsbD0iIzAwZmY0MSIvPgo8L3N2Zz4K">
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- CRT Screen Effect -->
+    <div class="crt-screen">
+        <!-- Scanlines -->
+        <div class="scanlines"></div>
+        
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Header -->
+            <header class="terminal-header">
+                <div class="terminal-top">
+                    <span class="terminal-title">$ whoami</span>
+                    <div class="terminal-controls">
+                        <span class="control minimize">_</span>
+                        <span class="control maximize">□</span>
+                        <span class="control close">×</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Terminal Content -->
+            <main class="terminal-content">
+                <!-- About Section -->
+                <section class="about">
+                    <div class="prompt">
+                        <span class="user">jym@kazama</span><span class="separator">:</span><span class="path">~</span><span class="dollar">$</span>
+                        <span class="command">cat about.txt</span>
+                    </div>
+                    
+                    <div class="output">
+                        <h1 class="name glitch" data-text="Jean-Marie 'Jym' Gueirard">Jean-Marie "Jym" Gueirard</h1>
+                        <p class="role">Senior Software Engineer | 14+ years of experience</p>
+                        <p class="location">📍 Nice, France</p>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section class="skills">
+                    <div class="prompt">
+                        <span class="user">jym@kazama</span><span class="separator">:</span><span class="path">~</span><span class="dollar">$</span>
+                        <span class="command">ls -la skills/</span>
+                    </div>
+                    
+                    <div class="output">
+                        <div class="file-list">
+                            <div class="file">drwxr-xr-x  1 jym  staff   128 Dec 28 2024 <span class="folder">languages/</span></div>
+                            <div class="skill-group">
+                                <span class="skill-item">Go</span>
+                                <span class="skill-item">C#/.NET</span>
+                                <span class="skill-item">JavaScript</span>
+                                <span class="skill-item">Kotlin</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Passions Section -->
+                <section class="passions">
+                    <div class="prompt">
+                        <span class="user">jym@kazama</span><span class="separator">:</span><span class="path">~</span><span class="dollar">$</span>
+                        <span class="command">cat hobbies.ini</span>
+                    </div>
+                    
+                    <div class="output">
+                        <div class="hobby-grid">
+                            <div class="hobby-item">
+                                <span class="hobby-icon">🎮</span>
+                                <span class="hobby-text">Gaming</span>
+                            </div>
+                            <div class="hobby-item">
+                                <span class="hobby-icon">🏋️</span>
+                                <span class="hobby-text">Weightlifting</span>
+                            </div>
+                            <div class="hobby-item">
+                                <span class="hobby-icon">🍪</span>
+                                <span class="hobby-text">Baking cookies</span>
+                            </div>
+                            <div class="hobby-item">
+                                <span class="hobby-icon">🥋</span>
+                                <span class="hobby-text">Martial Arts</span>
+                            </div>
+                            <div class="hobby-item">
+                                <span class="hobby-icon">🧱</span>
+                                <span class="hobby-text">Lego</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Links Section -->
+                <section class="links">
+                    <div class="prompt">
+                        <span class="user">jym@kazama</span><span class="separator">:</span><span class="path">~</span><span class="dollar">$</span>
+                        <span class="command">cat links.json</span>
+                    </div>
+                    
+                    <div class="output">
+                        <div class="json-output">
+                            {<br>
+                            &nbsp;&nbsp;"github": "<a href="https://github.com/jmgueirard" target="_blank">github.com/jmgueirard</a>",<br>
+                            &nbsp;&nbsp;"linkedin": "<a href="https://linkedin.com/in/jean-marie-gueirard" target="_blank">linkedin.com/in/jean-marie-gueirard</a>"<br>
+                            }
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Easter Egg Message -->
+                <div id="easter-egg-message" class="easter-egg-message">
+                    <div class="message-content">
+                        <span class="obi-wan">Hello there</span>
+                    </div>
+                </div>
+
+                <!-- Cursor -->
+                <div class="cursor-line">
+                    <span class="user">jym@kazama</span><span class="separator">:</span><span class="path">~</span><span class="dollar">$</span>
+                    <span class="cursor">█</span>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

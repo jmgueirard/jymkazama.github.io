@@ -1,0 +1,536 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono:wght@400&display=swap');
+
+/* CSS Variables */
+:root {
+    --primary-color: #00ff41;
+    --secondary-color: #ff0080;
+    --accent-color: #00ffff;
+    --bg-color: #0a0a0a;
+    --terminal-bg: #111111;
+    --text-color: #00ff41;
+    --prompt-color: #00ffff;
+    --command-color: #ffff00;
+    --comment-color: #666666;
+    --error-color: #ff0040;
+    
+    /* CRT Effect */
+    --scanline-opacity: 0.04;
+    --flicker-intensity: 0.15;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Matrix Rain Canvas */
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#matrix-canvas.active {
+    opacity: 1;
+}
+
+/* CRT Screen Effect */
+.crt-screen {
+    position: relative;
+    min-height: 100vh;
+    background: 
+        radial-gradient(ellipse at center, transparent 20%, rgba(0, 0, 0, 0.2) 70%),
+        linear-gradient(90deg, transparent 98%, rgba(0, 255, 65, 0.03) 100%),
+        linear-gradient(0deg, transparent 98%, rgba(0, 255, 65, 0.03) 100%);
+    
+    /* CRT curvature */
+    border-radius: 15px;
+    box-shadow: 
+        inset 0 0 50px rgba(0, 255, 65, 0.1),
+        0 0 100px rgba(0, 255, 65, 0.2);
+    
+    /* Subtle animation */
+    animation: crt-flicker 4s infinite linear;
+}
+
+/* Scanlines */
+.scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 65, var(--scanline-opacity)) 2px,
+        rgba(0, 255, 65, var(--scanline-opacity)) 4px
+    );
+    animation: scanlines-move 0.1s linear infinite;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Terminal Header */
+.terminal-header {
+    margin-bottom: 20px;
+}
+
+.terminal-top {
+    background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+    border: 2px solid var(--primary-color);
+    border-radius: 8px 8px 0 0;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+.terminal-title {
+    color: var(--accent-color);
+    font-weight: bold;
+    text-shadow: 0 0 10px currentColor;
+}
+
+.terminal-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control.minimize {
+    background: var(--command-color);
+    color: #000;
+}
+
+.control.maximize {
+    background: var(--primary-color);
+    color: #000;
+}
+
+.control.close {
+    background: var(--error-color);
+    color: #fff;
+}
+
+.control:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* Terminal Content */
+.terminal-content {
+    background: var(--terminal-bg);
+    border: 2px solid var(--primary-color);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 20px;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 65, 0.3),
+        inset 0 0 50px rgba(0, 255, 65, 0.05);
+    position: relative;
+}
+
+/* Sections */
+section {
+    margin-bottom: 30px;
+}
+
+/* Prompt */
+.prompt {
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.user {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px currentColor;
+}
+
+.separator {
+    color: var(--text-color);
+}
+
+.path {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px currentColor;
+}
+
+.dollar {
+    color: var(--text-color);
+    margin-right: 5px;
+}
+
+.command {
+    color: var(--command-color);
+    text-shadow: 0 0 5px currentColor;
+}
+
+/* Output */
+.output {
+    margin-left: 0;
+    margin-bottom: 20px;
+}
+
+/* Name with Glitch Effect */
+.name {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px currentColor;
+}
+
+.glitch {
+    position: relative;
+    animation: glitch 2s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    animation: glitch-1 0.5s infinite;
+    color: var(--secondary-color);
+    z-index: -1;
+}
+
+.glitch::after {
+    animation: glitch-2 0.5s infinite;
+    color: var(--accent-color);
+    z-index: -2;
+}
+
+/* Role and Location */
+.role {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+    text-shadow: 0 0 5px currentColor;
+}
+
+.location {
+    font-size: 1rem;
+    color: var(--text-color);
+    text-shadow: 0 0 5px currentColor;
+}
+
+/* Skills */
+.file-list {
+    line-height: 1.6;
+}
+
+.file {
+    color: var(--comment-color);
+    margin-bottom: 8px;
+}
+
+.folder {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px currentColor;
+}
+
+.skill-group {
+    margin-left: 20px;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.skill-item {
+    color: var(--primary-color);
+    background: rgba(0, 255, 65, 0.1);
+    padding: 5px 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-shadow: 0 0 5px currentColor;
+    transition: all 0.3s ease;
+}
+
+.skill-item:hover {
+    background: rgba(0, 255, 65, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Hobbies */
+.hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.hobby-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid var(--accent-color);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.hobby-item:hover {
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.hobby-icon {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.7));
+}
+
+.hobby-text {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px currentColor;
+    font-size: 0.9rem;
+}
+
+/* Links */
+.json-output {
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.json-output a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    text-shadow: 0 0 5px currentColor;
+    transition: all 0.3s ease;
+}
+
+.json-output a:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px currentColor;
+    text-decoration: underline;
+}
+
+/* Easter Egg Message */
+.easter-egg-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+.easter-egg-message.show {
+    opacity: 1;
+}
+
+.message-content {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 30px 40px;
+    box-shadow: 
+        0 0 50px rgba(0, 255, 65, 0.8),
+        inset 0 0 30px rgba(0, 255, 65, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.obi-wan {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-shadow: 
+        0 0 20px currentColor,
+        0 0 40px currentColor;
+    animation: pulse-glow 1.5s infinite alternate;
+}
+
+/* Cursor */
+.cursor-line {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.cursor {
+    animation: cursor-blink 1s infinite;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px currentColor;
+}
+
+/* Animations */
+@keyframes crt-flicker {
+    0%, 100% { opacity: 1; }
+    99% { opacity: 1; }
+    99.5% { opacity: 0.98; }
+}
+
+@keyframes scanlines-move {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+}
+
+@keyframes glitch {
+    0%, 90%, 100% {
+        transform: translate(0);
+    }
+    10% {
+        transform: translate(-2px, 1px);
+    }
+    20% {
+        transform: translate(2px, -1px);
+    }
+    30% {
+        transform: translate(-1px, 2px);
+    }
+    40% {
+        transform: translate(1px, -2px);
+    }
+    50% {
+        transform: translate(-2px, 1px);
+    }
+    60% {
+        transform: translate(2px, -1px);
+    }
+    70% {
+        transform: translate(-1px, 2px);
+    }
+    80% {
+        transform: translate(1px, -2px);
+    }
+}
+
+@keyframes glitch-1 {
+    0%, 90%, 100% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(2px, 0);
+    }
+}
+
+@keyframes glitch-2 {
+    0%, 90%, 100% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 0);
+    }
+}
+
+@keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes pulse-glow {
+    0% {
+        text-shadow: 
+            0 0 20px currentColor,
+            0 0 40px currentColor;
+    }
+    100% {
+        text-shadow: 
+            0 0 30px currentColor,
+            0 0 60px currentColor;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .terminal-content {
+        padding: 15px;
+    }
+    
+    .name {
+        font-size: 1.8rem;
+    }
+    
+    .hobby-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+    
+    .skill-group {
+        gap: 10px;
+    }
+    
+    .obi-wan {
+        font-size: 1.8rem;
+    }
+    
+    .message-content {
+        padding: 20px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .terminal-top {
+        padding: 8px 12px;
+    }
+    
+    .terminal-title {
+        font-size: 0.9rem;
+    }
+    
+    .hobby-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .skill-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
